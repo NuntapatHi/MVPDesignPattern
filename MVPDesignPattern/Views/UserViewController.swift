@@ -11,12 +11,12 @@ class UserViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var users = [User]()
+    private var users: [User]?
     
     private let presenter = UserPresenter()
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         title = "Users"
         
         tableView.delegate = self
@@ -29,21 +29,23 @@ class UserViewController: UIViewController {
 extension UserViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return users?.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = users[indexPath.row].name
+        cell.textLabel?.text = users?[indexPath.row].name ?? "No users available"
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.didTapUser(user: users[indexPath.row])
+        guard let user = users?[indexPath.row] else {return}
+        presenter.didTapUser(user: user)
     }
 }
 
 extension UserViewController: UserPresenterDelegate{
+    
     func presentError(error: Error) {
         
         DispatchQueue.main.async { [weak self] in

@@ -31,7 +31,6 @@ class UserPresenter{
             case .success(let users):
                 self?.delegate?.presentUser(users: users)
             case .failure(let error):
-                print("\(error) : \(error.localizedDescription)")
                 self?.delegate?.presentError(error: error)
             }
         }
