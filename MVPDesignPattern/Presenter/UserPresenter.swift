@@ -7,9 +7,11 @@
 
 import Foundation
 import UIKit
+
 protocol UserPresenterDelegate{
     func presentUser(users: [User])
     func presentAlert(title: String, message: String)
+    func presentError(error: Error)
 }
 
 typealias PresenterDelegate = UserPresenterDelegate & UIViewController
@@ -30,6 +32,7 @@ class UserPresenter{
                 self?.delegate?.presentUser(users: users)
             case .failure(let error):
                 print("\(error) : \(error.localizedDescription)")
+                self?.delegate?.presentError(error: error)
             }
         }
     }

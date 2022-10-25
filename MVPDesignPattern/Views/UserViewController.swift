@@ -44,11 +44,21 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource{
 }
 
 extension UserViewController: UserPresenterDelegate{
+    func presentError(error: Error) {
+        
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: "\(error)", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self?.present(alert, animated: true)
+        }
+        
+    }
+    
     func presentUser(users: [User]) {
         self.users = users
         
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
         }
     }
     
